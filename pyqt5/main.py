@@ -4,11 +4,11 @@ import sys
 
 # import third-party libraries
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QAction
 
 from canvas import Canvas
 from matrix import Matrix
+from pyqt5.info import Info
 
 # read configuration
 cfg = configparser.ConfigParser()
@@ -43,7 +43,8 @@ class Main(QMainWindow):
         self.show()
 
     def clicked(self):
-        print('Exit app')
+        info = Info()
+        info.exec_()
 
     def keyPressEvent(self, event):
         if self.state == "lose" or self.state == "win":
