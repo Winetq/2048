@@ -4,7 +4,8 @@ import sys
 
 # import third-party libraries
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow, QAction
 
 from canvas import Canvas
 from matrix import Matrix
@@ -19,14 +20,7 @@ class Main(QMainWindow):
     def __init__(self):
         super(Main, self).__init__()
         self.setFixedSize(int(cfg.get("Window", "width")), int(cfg.get("Window", "height")))
-
-        center_point = QtWidgets.QDesktopWidget().availableGeometry().center()
-        qtrect = self.geometry()
-        qtrect.moveCenter(center_point)
-        self.move(qtrect.topLeft())
-
         self.setWindowTitle(cfg.get("Locale", "title"))
-
         self.setAutoFillBackground(True)
 
         pallete = self.palette()
@@ -34,13 +28,22 @@ class Main(QMainWindow):
         self.setPalette(pallete)
 
         self.state = "playing"
+
         self.matrix = Matrix(self)
         self.canvas = Canvas(self)
+        self.setCentralWidget(self.canvas)
+
+        infoAction = QAction('&O grze', self)
+        infoAction.triggered.connect(self.clicked)
+
+        menu = self.menuBar()
+        infoMenu = menu.addMenu('&Informacje')
+        infoMenu.addAction(infoAction)
 
         self.show()
 
-    def exitCall(self):
-        print("info")
+    def clicked(self):
+        print('Exit app')
 
     def keyPressEvent(self, event):
         if self.state == "lose" or self.state == "win":
