@@ -33,18 +33,32 @@ class Main(QMainWindow):
         self.canvas = Canvas(self)
         self.setCentralWidget(self.canvas)
 
+        self.createMenu()
+
+        self.show()
+
+    def createMenu(self):
         infoAction = QAction('&O grze', self)
         infoAction.triggered.connect(self.clicked)
 
+        otherAction = QAction('&Nowa gra', self)
+        otherAction.triggered.connect(self.start_new_game)
+
         menu = self.menuBar()
+
         infoMenu = menu.addMenu('&Informacje')
         infoMenu.addAction(infoAction)
 
-        self.show()
+        otherMenu = menu.addMenu('&Inne')
+        otherMenu.addAction(otherAction)
 
     def clicked(self):
         info = Info()
         info.exec_()
+
+    def start_new_game(self):
+        self.close()
+        self.__init__()
 
     def keyPressEvent(self, event):
         if self.state == "lose" or self.state == "win":
